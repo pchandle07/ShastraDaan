@@ -25,7 +25,7 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
             console.log(data)
     
             var options = {
-                "key": "rzp_test_nqV4pFlYAmKAUI",
+                "key": "rzp_test_jdghHgbuygNKe9",
                 currency: data.currency,
                 amount: parseInt(data.amount),
                 order_id: data.id,
