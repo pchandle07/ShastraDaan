@@ -70,7 +70,7 @@ const PlaceSearchBox = () => {
     if(e.target.value === ""){
       setSchools([])
       setText(e.target.value);
-      setCardVisibility("none");
+//       setCardVisibility("none");
     }
     else {
       setText(e.target.value);
