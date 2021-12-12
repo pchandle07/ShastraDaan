@@ -25,15 +25,15 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
             console.log(data)
     
             var options = {
-                "key": "rzp_test_jdghHgbuygNKe9",
+                "key": "rzp_test_P6BGdE4VL5vWrU",
                 currency: data.currency,
                 amount: parseInt(data.amount),
                 order_id: data.id,
                 "name": name,
-                "email": desc,
+                "email": email,
                 "image": "https://i.ibb.co/tKRjzCz/logoketto.png",
                 "handler": function (response) {
-                    console.log("payment successful");
+                    console.log("payment successful from handler", response);
                     setSucess(true);
                     setFailure(false);
                 },
@@ -42,7 +42,9 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                     "email": email,
                 },
                 "notes": {
-                    "address": "Razorpay Corporate Office"
+                    "address": "Razorpay Corporate Office",
+                    "name": name,
+                    "email": email,
                 },
                 "theme": {
                     "color": "#10B981"
@@ -52,9 +54,12 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
     
             var rzp1 = new window.Razorpay(options);
             rzp1.on('payment.failed', function (response) {
-                console.log("payment failure");
+                console.log("payment failure", response);
                 setSucess(false);
                 setFailure(true);
+            });
+            rzp1.on('payment.paid', function (response) {
+                console.log("payment sucessful from event", response);
             });
             rzp1.open();
         } catch (err) {

@@ -13,7 +13,6 @@ const App = () => {
   const [placeAddress, setPlaceAddress] = useState("");
   const [schoolInfo, setSchoolInfo] = useState(null);
 
-  debugger;
   return (
     <Router>
       <Routes>
