@@ -1,0 +1,16 @@
+input{
+    outline: none;
+    border-radius: 10px;
+}
+
+.input-container{ 
+    border-radius: 10px;
+
+}
+.city-input{
+    padding: 10px;
+}
+
+.school-input{
+    padding: 10px;
+}

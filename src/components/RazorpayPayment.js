@@ -101,9 +101,6 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                 }
             </div>
 
-
-
-
         </div>
     );
 };

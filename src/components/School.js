@@ -68,8 +68,8 @@ const School = ({
       <div id="map"></div>
       <Menu />
       <main className="home-main">
-        <div className="heading">Donate for your school</div>
-        <PlaceSearchBox />
+        {/* <div className="heading">Donate for your school</div>
+        <PlaceSearchBox /> */}
 
         {placeImage && (
           <img src={placeImage} className="school-image" alt="school"></img>

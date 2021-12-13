@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useRef, useEffect } from 'react';
+import "./PlaceSearchBox.css"
 
 const google = window.google
 
@@ -103,8 +104,6 @@ const PlaceSearchBox = () => {
       setCardVisibility("none");
   }, [])
 
-  
-
   return (
     <div>
       <div id="map"></div>
@@ -119,10 +118,8 @@ const PlaceSearchBox = () => {
         <div className="school-input" >
           <input onChange={handleInput} placeholder="Find your school" type="text" value={text} />
 
-
           <div className="schoolCards" style={{ display: cardVisibility }}>
             {
-
               schools.map((school) =>
                 <Link key={school.place_id} to={"/"+school.place_id}><div value="hello" key={new Date().getTime()} className="searchCard" onClick={() => {setCardVisibility("none")}}> {school.name} <div style={{fontSize:"0.8rem", color: "gray" }}>
                 {school.formatted_address}
@@ -130,6 +127,7 @@ const PlaceSearchBox = () => {
             }
           </div>
         </div>
+
       </div>
     </div>
   );
