@@ -2,13 +2,13 @@ import React from 'react';
 import './RazorpayPayment.css';
 import { useState } from "react";
 import { createRazorpayOrder } from './service';
+import { RAZORPAY_PAYMENT_KEY_ID } from '../constants';
 
 
 
 
 const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
 
-    const [desc, setDesc] = useState("Donation to ISKCON");
     const [success, setSucess] = useState(false);
     const [failure, setFailure] = useState(false);
     const { get, post, response, loading, error } = httpClient;
@@ -25,7 +25,7 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
             console.log(data)
     
             var options = {
-                "key": "rzp_test_P6BGdE4VL5vWrU",
+                "key": RAZORPAY_PAYMENT_KEY_ID,
                 currency: data.currency,
                 amount: parseInt(data.amount),
                 order_id: data.id,
@@ -42,7 +42,7 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                     "email": email,
                 },
                 "notes": {
-                    "address": "Razorpay Corporate Office",
+                    "placeId": placeId,
                     "name": name,
                     "email": email,
                 },

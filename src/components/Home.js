@@ -10,7 +10,7 @@ const Home = () => {
             
             <main className="home-main">
                 <div className="heading">Donate for your school</div>
-                <PlaceSearchBox></PlaceSearchBox>
+                <PlaceSearchBox />
             </main>
         </div>
     );
