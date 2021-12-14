@@ -88,8 +88,10 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                     </div> : <div></div>
                 }
                 <div style={{ display: 'block', paddingTop: '20px', alignSelf: 'center' }}>
-                    <img height="30px" width="30px"  src="/shareIcon.png" onClick={
+                    <img height="30px" width="30px"  src="/shareIcon.png" onClick={() => { 
                         copyUrlToClipboard(window.location.href)
+                        alert('link is copied!');
+                    }
                     } alt="share" title="Copy Link"></img>
                 </div>
             </div>
