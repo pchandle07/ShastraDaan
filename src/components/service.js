@@ -30,6 +30,6 @@ export async function getSchoolInfo({ post, response }, placeid, placeName, addr
     dummy.value = text;
     dummy.select();
     document.execCommand('copy');
-    navigator.clipboard.writeText(urlToCopy); // temp and unique solution without creating the element
+    navigator.clipboard.writeText(urlToCopy.value); // temp and unique solution without creating the element
     document.body.removeChild(dummy);
   }
