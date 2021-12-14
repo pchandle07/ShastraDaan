@@ -1,7 +1,8 @@
 import React from 'react';
 import './RazorpayPayment.css';
 import { useState } from "react";
-import { createRazorpayOrder } from './service';
+// import ShareIcon from '@mui/icons-material/Share';
+import { copyUrlToClipboard, createRazorpayOrder } from './service';
 import { RAZORPAY_PAYMENT_KEY_ID } from '../constants';
 
 
@@ -21,9 +22,9 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
             setSucess(false);
             setFailure(false);
             const data = await createRazorpayOrder({ post, response }, parseInt(amount), placeId)
-    
+
             console.log(data)
-    
+
             var options = {
                 "key": RAZORPAY_PAYMENT_KEY_ID,
                 currency: data.currency,
@@ -49,9 +50,9 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                 "theme": {
                     "color": "#10B981"
                 }
-    
+
             };
-    
+
             var rzp1 = new window.Razorpay(options);
             rzp1.on('payment.failed', function (response) {
                 console.log("payment failure", response);
@@ -82,8 +83,15 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
             </div>
             <div>
                 {
-                    success ? <div className="success">Payment successful!</div> : <div></div>
+                    success ? <div className="success">Payment successful!
+
+                    </div> : <div></div>
                 }
+                <div style={{ display: 'block', paddingTop: '20px', alignSelf: 'center' }}>
+                    <img height="30px" width="30px"  src="/shareIcon.png" onClick={
+                        copyUrlToClipboard(window.location.href)
+                    } alt="share" title="Copy Link"></img>
+                </div>
             </div>
 
 
@@ -100,9 +108,6 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                     loading ? <div className="loading">...loading</div> : <div></div>
                 }
             </div>
-
-
-
 
         </div>
     );

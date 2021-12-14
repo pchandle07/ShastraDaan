@@ -1,5 +1,6 @@
 import React from 'react';
 import '../index.css';
+import "./Menu.css";
 
 import logo from "./icon1.png"
 
@@ -9,8 +10,12 @@ const Menu = () => {
             
             <nav>
                 <div className="nav-header">
-                    <img src={logo} className="nav-icon" alt="logo"></img>
-                    Shastra Daan
+                    {/* Add a route here to navigate to home page */}
+                    <>
+                    <img src={logo} className="nav-icon" alt="logo"/>
+                    <div>Shastra Daan</div>
+                    </>
+                    
                 </div>
             </nav>            
         </div>
