@@ -17,7 +17,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home httpClient={httpClient} />} />
-        <Route
+        {/* <Route
           path="/:placeid"
           element={
             <School
@@ -31,8 +31,8 @@ const App = () => {
               setSchoolInfo={setSchoolInfo}
             />
           }
-        />
-        <Route path="/fundraiser" element={<FundraiserView httpClient={httpClient} schoolInfo={{ schoolInfo, placeImage}} />} />
+        /> */}
+        <Route exact path="/fundraiser/:placeid" element={<FundraiserView httpClient={httpClient} schoolInfo={{ schoolInfo, placeImage}} />} />
       </Routes>
     </Router>
   );

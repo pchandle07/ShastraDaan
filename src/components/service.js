@@ -1,4 +1,4 @@
-export async function getSchoolInfo({ post, response }, placeid, placeName, address) {
+export async function getSchoolInfo({ post, response }, placeid, placeName, address = '') {
     const schoolInfo = await post("/place/info", {
       address,
       description: "string",
@@ -20,4 +20,16 @@ export async function getSchoolInfo({ post, response }, placeid, placeName, addr
     if (response.ok) {
       return schoolInfo;
     }
+  }
+
+  export const copyUrlToClipboard = (urlToCopy) => {
+    var dummy = document.createElement('input'),
+      text = urlToCopy;
+  
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    navigator.clipboard.writeText(urlToCopy); // temp and unique solution without creating the element
+    document.body.removeChild(dummy);
   }

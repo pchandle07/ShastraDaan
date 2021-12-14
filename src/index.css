@@ -29,7 +29,7 @@ input {
 }
 
 .searchCard{
-  width:30rem;
+  width: 100%;
   margin: auto;
   padding: 0.5rem;
   text-align: left;
@@ -44,8 +44,8 @@ input {
 }
 
 .schoolCards {
-  height:50vh;
-  overflow-y: scroll;
+  max-height: 50vh;
+  overflow-y: auto;
   /* width:30rem; */
   /* margin: auto; */
 }
