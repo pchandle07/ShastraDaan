@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import '../../node_modules/boots';
 import RazorpayPayment from "./RazorpayPayment";
+import ProgressBar from "./ProgressBar";
 import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ const FundraiserView = ({ httpClient }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
+  const [progress, setProgress] = useState(0);
   const [placeImageUrl, setPlaceImageUrl] = useState(localStorage.getItem('placeImageUrl') || null);
   const [schoolInfo, setSchoolInfo] = useState({
     schoolInfo: {
@@ -67,6 +69,7 @@ const FundraiserView = ({ httpClient }) => {
           placeAddress
         );
         setSchoolInfo({ schoolInfo, placeImage })
+        setProgress(parseInt(Number(schoolInfo.percentage) * 10))
     } else {
       console.log('sry bro', { placeAddress, placeName, placeid });
     }
@@ -135,6 +138,11 @@ const FundraiserView = ({ httpClient }) => {
                   onChange={({ target }) => setAmount(target.value)}
                   placeholder="Enter Amount"
                 ></input>
+
+                <div>
+                  <span>  {progress} % </span> 
+                  <ProgressBar percentage={progress} />
+                </div>
                 <RazorpayPayment
                   name={name}
                   email={email}
