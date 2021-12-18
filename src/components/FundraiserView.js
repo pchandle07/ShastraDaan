@@ -104,7 +104,7 @@ const FundraiserView = ({ httpClient }) => {
         
       <Grid container style={{ marginTop: '30px' }} >
         <Grid item sm={6} xs={12}>
-        <div className="text-center">
+        <div style={{ maxHeight: '336px'}}className="text-center">
             <img
               src={placeImageUrl || schoolInfo.placeImage}
               alt="Place unavailable"

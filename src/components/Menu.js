@@ -9,11 +9,11 @@ const Menu = () => {
         <div>
             
             <nav>
-                <div className="nav-header">
+                <div className="main-wrap nav-header">
                     {/* Add a route here to navigate to home page */}
                     <>
                     <img src={logo} className="nav-icon" alt="logo"/>
-                    <div>Shastra Daan</div>
+                    <div>Vidyartha</div>
                     </>
                     
                 </div>
