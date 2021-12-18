@@ -5,6 +5,9 @@ import School from "./components/School";
 import Home from "./components/Home";
 import FundraiserView from "./components/FundraiserView";
 import { BASE_API_URL } from "./constants";
+import NewComp1 from "./components/NewComp1";
+import NewComp2 from "./components/NewComp2";
+import NewComp3 from "./components/NewComp3";
 
 const App = () => {
   const httpClient = useFetch(BASE_API_URL);
@@ -32,7 +35,10 @@ const App = () => {
             />
           }
         /> */}
-        <Route exact path="/fundraiser/:placeid" element={<FundraiserView httpClient={httpClient} schoolInfo={{ schoolInfo, placeImage}} />} />
+        <Route exact path="/fundraiser/:placeid" element={<FundraiserView httpClient={httpClient} schoolInfo={{ schoolInfo, placeImage }} />} />
+        <Route exact path="/new1" element={<NewComp1 />}></Route>
+        <Route exact path="/new2" element={<NewComp2 />}></Route>
+        <Route exact path="/new3" element={<NewComp3 />}></Route>
       </Routes>
     </Router>
   );
