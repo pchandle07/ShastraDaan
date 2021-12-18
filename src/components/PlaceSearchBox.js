@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom"
-import { get } from 'lodash';
+import { get, debounce } from 'lodash';
 import { useState, useRef, useEffect } from 'react';
 import "./PlaceSearchBox.css"
 
@@ -21,9 +21,7 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
   // const [city, setCity] = useState("");
 
-
-  function fetchSchools() {
-
+  const fetchSchools = debounce(() => {
     var pyrmont = new google.maps.LatLng(latitude, longitude);
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -65,6 +63,7 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
       }
     });
   }
+    , 500);
 
 
   function handleInput(e) {
