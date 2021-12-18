@@ -21,7 +21,7 @@ code {
 }
 
 input {
-  width: 30rem;
+  width: 100%;
   font-family: 'Poppins', sans-serif;
   padding:0.5rem;
   margin: 0 1rem;
@@ -122,6 +122,12 @@ nav {
 }
 
 
+.home-main .main-heading {
+  text-align: center;
+  
+}
+
+
 /* Input */
 
 .city-input {
@@ -135,10 +141,21 @@ nav {
 }
 
 .school-image {
-  width:30rem;
+  width: 100%;
   height: 15rem;
+  margin: 15px 0px;
   object-fit: cover;
-  margin: auto;
+  /* margin: auto; */
+}
+
+.dialog-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.dialog-content button {
+  border: none;
+  
 }
 
 
@@ -165,4 +182,15 @@ a {
     .searchCard{
       width: 20rem;
     }
+}
+
+@media (max-width: 600px) {
+  .home-main .main-heading {
+    font-size: 26px;
+    margin: 10px 0px;
+  }
+  .city-input, .school-input {
+    margin: 0.5rem;
+    text-align: center;
+  }
 }
