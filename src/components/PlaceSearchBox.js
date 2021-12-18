@@ -111,12 +111,12 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
       <div className="input-container">
 
-        <div className="city-input">
+        <div className="city-input form-input-wrap">
           <input type="search" ref={autoCompleteRef} placeholder="Select a city" />
         </div>
 
 
-        <div className="school-input" >
+        <div className="school-input form-input-wrap" >
           <input onChange={handleInput} placeholder="Find your school" type="text" value={text} />
 
           <div className="schoolCards" style={{ display: cardVisibility }}>

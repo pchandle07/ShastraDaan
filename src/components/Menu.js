@@ -8,7 +8,7 @@ const Menu = () => {
     return (
         <div>
             
-            <nav>
+            <nav className="header-main-wrap">
                 <div className="main-wrap nav-header">
                     {/* Add a route here to navigate to home page */}
                     <>
