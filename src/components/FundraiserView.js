@@ -7,7 +7,8 @@ import _ from 'lodash';
 import { useNavigate } from "react-router-dom";
 import { getSchoolInfo } from "./service";
 import Menu from "./Menu";
-import { Grid } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
+import Footer from "./Footer";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { fa-facebook } from '@fortawesome/free-solid-svg-icons'
 
@@ -21,11 +22,13 @@ const FundraiserView = ({ httpClient }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState();
+  const [raisedAmount, setRaisedAmount] = useState(0);
+  const [requiredAmount, setRequiredAmount] = useState(0);
   const [progress, setProgress] = useState(0);
   const [placeImageUrl, setPlaceImageUrl] = useState(localStorage.getItem('placeImageUrl') || null);
   const [schoolInfo, setSchoolInfo] = useState({
     schoolInfo: {
-      name: 'goloka',
+      name: 'Loading...',
       id: '',
     }
   });
@@ -37,19 +40,19 @@ const FundraiserView = ({ httpClient }) => {
       const request = {
         placeId: placeid,
       };
-  
+
       const map = new google.maps.Map(document.getElementById("map"), {
         center: pyrmont,
         zoom: 15,
       });
       const service = new google.maps.places.PlacesService(map);
-  
+
       service.getDetails(request, (place, status) => {
-        console.log({status});
+        console.log({ status });
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           setPlaceInfo(place);
         }
-  
+
       });
     } catch (error) {
       console.log('fetchSchoolDetails failed', error);
@@ -69,14 +72,29 @@ const FundraiserView = ({ httpClient }) => {
           placeAddress
         );
         setSchoolInfo({ schoolInfo, placeImage })
-        setProgress(parseInt(Number(schoolInfo.percentage) * 10))
-    } else {
-      console.log('sry bro', { placeAddress, placeName, placeid });
-    }
+        setProgress(parseInt(Number(schoolInfo.percentage) * 10));
+        setRaisedAmount(parseInt(Number(schoolInfo.collected) / 100));
+        setRequiredAmount(parseInt(Number(schoolInfo.required) / 100));
+      } else {
+        console.log('sry bro', { placeAddress, placeName, placeid });
+      }
     } catch (error) {
-     console.log('getPlaceInfo Error', error);
+      console.log('getPlaceInfo Error', error);
     }
   }
+
+  useEffect(() => {
+    document.body.style.background = "linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url('http://localhost:3000/books.png')"
+    document.body.style.backgroundRepeat = 'repeat-y';
+    document.body.style.backgroundSize = '100vh 100%';
+    document.body.style.backgroundPosition = 'left 80px';
+    return () => {
+      document.body.style.background = "linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .1)) url('http://localhost:3000/books.png')"
+      document.body.style.backgroundRepeat = 'repeat-y';
+      document.body.style.backgroundSize = '100vh 100%';
+      document.body.style.backgroundPosition = 'left 80px';
+    }
+  }, []);
 
   useEffect(() => {
     if (!placeInfo && !placeid) {
@@ -84,7 +102,7 @@ const FundraiserView = ({ httpClient }) => {
     }
     if (!placeInfo) {
       fetchSchoolDetails(placeid);
-    } 
+    }
     if (placeInfo) {
       console.log('got the placeinfo');
       getPlaceInfo(placeInfo);
@@ -97,62 +115,74 @@ const FundraiserView = ({ httpClient }) => {
   console.log("School selected: ", schoolInfo);
   return (
     <div >
-            <Menu></Menu>
+      <Menu></Menu>
       <div className="private-wrap text-center">
-        <h1> <b> {schoolInfo.schoolInfo.name} </b></h1>
-        <h4>{schoolInfo.schoolInfo.address}</h4>
         
-      <Grid container style={{ marginTop: '30px' }} >
-        <Grid item sm={6} xs={12}>
-        <div style={{ maxHeight: '336px'}}className="text-center">
-            <img
-              src={placeImageUrl || schoolInfo.placeImage}
-              alt="Place unavailable"
-              width="100%"
-              height="500"
-            ></img>
-            </div>
-        </Grid>
-        <Grid item sm={6} xs={12} style={{ alignSelf: 'center' }}>
-        <div className="text-center" style={{ padding: '20px' }}>
-            <div>
-              <form>
-                <input
-                  style={{ margin: '5px', borderRadius: '5px' }}
-                  type="text"
-                  value={name}
-                  onChange={({ target }) => setName(target.value)}
-                  placeholder="Enter name"
-                ></input>
-                <input
-                  style={{ margin: '5px', borderRadius: '5px' }}
-                  type="email"
-                  value={email}
-                  onChange={({ target }) => setEmail(target.value)}
-                  placeholder="Enter email"
-                ></input>
-                <input
-                  style={{ margin: '5px', marginBottom: '10px', borderRadius: '5px' }}
-                  type="text"
-                  value={amount}
-                  onChange={({ target }) => setAmount(target.value)}
-                  placeholder="Enter Amount"
-                ></input>
+        
 
-                <div>
-                  <span>  {progress} % </span> 
-                  <ProgressBar percentage={progress} />
-                </div>
-                <RazorpayPayment
-                  name={name}
-                  email={email}
-                  amount={amount}
-                  httpClient={httpClient}
-                  placeId={schoolInfo.schoolInfo.id}
-                ></RazorpayPayment>
-              </form>
+        <Grid container style={{ marginTop: '30px' }} >
+          <Grid item sm={7} xs={12} className="align-center">
+          <h1> {schoolInfo.schoolInfo.name}</h1>
+            <div className="text-center">
+              <img
+                src={placeImageUrl || schoolInfo.placeImage}
+                alt="Place Image unavailable"
+                width="100%"
+                // height="500"
+              ></img>
             </div>
-            {/* <>
+            <h4>{schoolInfo.schoolInfo.address}</h4>
+          </Grid>
+          <Grid item sm={5} xs={12} style={{ alignSelf: 'center' }}>
+            <div className="text-center donor-info-form" style={{ padding: '20px' }}>
+              <div>
+                <form>
+                  <div className="form-input-wrap">
+                  <TextField
+                    type="text"
+                    fullwidth
+                    variant="outlined"
+                    value={name}
+                    onChange={({ target }) => setName(target.value)}
+                    label="Enter name"
+                  ></TextField>
+                  </div>
+                  <div className="form-input-wrap">
+                  <TextField
+                    type="email"
+                    fullwidth
+                    variant="outlined"
+                    value={email}
+                    onChange={({ target }) => setEmail(target.value)}
+                    label="Enter email"
+                  ></TextField>
+                  </div>
+                  <div className="form-input-wrap">
+                  <TextField
+                    type="text"
+                    fullwidth
+                    variant="outlined"
+                    value={amount}
+                    onChange={({ target }) => setAmount(target.value)}
+                    label="Enter Amount"
+                  ></TextField>
+                  </div>
+
+
+                  <div>
+                    <span className="sub-text"> Raised &#8377;{raisedAmount} out of &#8377;{requiredAmount} ({progress}%) </span>
+                    <ProgressBar percentage={progress} />
+                  </div>
+                  <RazorpayPayment
+                    name={name}
+                    email={email}
+                    amount={amount}
+                    httpClient={httpClient}
+                    placeId={schoolInfo.schoolInfo.id}
+                  ></RazorpayPayment>
+                </form>
+              </div>
+              {/* <>
             <div className="text-center mt-5">
               <p>Donation</p>
               <div className="progress text-center">
@@ -201,9 +231,9 @@ const FundraiserView = ({ httpClient }) => {
               <i class="fab fa-whatsapp fa-2x p-2"></i>
             </a>
         </> */}
-          </div>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
       </div>
       {/* <>
       <div className="container text-center">
@@ -373,7 +403,8 @@ const FundraiserView = ({ httpClient }) => {
         </div>
       </div>
       </> */}
-      <div style={{ visibility: 'hidden'}} id="map"></div>
+      <div style={{ visibility: 'hidden' }} id="map"></div>
+      <Footer />
     </div>
   );
 };

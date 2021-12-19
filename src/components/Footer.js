@@ -2,13 +2,22 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
-        <footer style={{ padding: "5rem", marginTop: "30vh" }}>
-            Footer:
+        <footer>
+            <nav className="header-main-wrap pd-10">
+                <div className="main-wrap nav-header nav-footer">
             <ul>
-                <li><Link to="/new1">New Component 1</Link></li>
-                <li><Link to="/new2">New Component 2</Link></li>
-                <li><Link to="/new3">New Component 3</Link></li>
+                <li><Link to="/terms">Terms & Conditions</Link></li>
+                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                <li><Link to="/returns">Return Policy</Link></li>
             </ul>
+                    {/* Add a route here to navigate to home page */}
+                    <>
+                    {/* <img src={logo} className="nav-icon" alt="logo"/> */}
+                    {/* <div className="nav-title">Vidyartha</div> */}
+                    </>
+                    
+                </div>
+            </nav>      
         </footer>
     )
 }

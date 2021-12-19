@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { get, debounce } from 'lodash';
 import { useState, useRef, useEffect } from 'react';
 import "./PlaceSearchBox.css"
+import { CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
 
 const google = window.google
 
@@ -14,6 +15,7 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
 
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
   // const [schools, setSchools] = useState([])
   const [cardVisibility, setCardVisibility] = useState("none") //visible
   const [latitude, setLatitude] = useState(7.798000);
@@ -39,8 +41,9 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
     };
 
     service.textSearch(request, (results, status) => {
+      // setLoading(true);
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-
+        // setLoading(false);
         setCardVisibility("block")
 
         let schoolsArr = []
@@ -110,14 +113,40 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
       <div className="input-container">
 
-        <div className="city-input">
-          <input type="search" ref={autoCompleteRef} placeholder="Select a city" />
+        <div className="city-input form-input-wrap">
+          <TextField autofocus fullWidth variant="outlined" type="search" inputRef={autoCompleteRef} label="Find a city" />
         </div>
 
 
-        <div className="school-input" >
-          <input onChange={handleInput} placeholder="Find your school" type="text" value={text} />
+        <div className="school-input form-input-wrap" >
+          {/* <TextField fullWidth variant="outlined" onChange={handleInput} label="Find your school" type="text" value={text} /> */}
+          <FormControl fullWidth variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Find your school</InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type="text"
+              value={text}
+              // disabled={loading}
+              label="Find your school"
+              onChange={handleInput}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    // onClick={handleClickShowPassword}
+                    // onMouseDown={handleMouseDownPassword}
 
+                    edge="end"
+                  >
+                    {loading ?
+                      <CircularProgress />
+                      : null
+                    }
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
           <div className="schoolCards" style={{ display: cardVisibility }}>
             {/* {
               schools.map((school) =>
@@ -129,6 +158,7 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
               schools.map((school) =>
                 <div key={school.place_id} to={"/" + school.place_id}><div value="hello" key={new Date().getTime()} className="searchCard" onClick={() => {
                   setFinalPlace(school);
+                  setText(school.name);
                   localStorage.setItem('placeInfo', JSON.stringify(school));
                   toggleDialog(true);
                   setCardVisibility("none");
