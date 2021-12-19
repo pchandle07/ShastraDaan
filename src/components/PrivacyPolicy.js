@@ -4,12 +4,12 @@ import Menu from './Menu';
 
 const PrivacyPolicy = () => {
     useEffect(() => {
-        document.body.style.background = "linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url('http://localhost:3000/books.png')"
+        document.body.style.background = "linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url('/books.png')"
         document.body.style.backgroundRepeat = 'repeat-y';
         document.body.style.backgroundSize = '100vh 100%';
         document.body.style.backgroundPosition = 'left 80px';
         return () => {
-          document.body.style.background = "linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .1)) url('http://localhost:3000/books.png')"
+          document.body.style.background = "linear-gradient(rgba(255, 255, 255, .1), rgba(255, 255, 255, .1)) url('/books.png')"
           document.body.style.backgroundRepeat = 'repeat-y';
           document.body.style.backgroundSize = '100vh 100%';
           document.body.style.backgroundPosition = 'left 80px';
