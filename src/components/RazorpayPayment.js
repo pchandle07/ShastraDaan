@@ -3,7 +3,13 @@ import './RazorpayPayment.css';
 import { useState } from "react";
 // import ShareIcon from '@mui/icons-material/Share';
 import { copyUrlToClipboard, createRazorpayOrder } from './service';
+// import ContentCopyIcon from '@material-ui/icons/ContentCopy';
+import ShareIcon from '@material-ui/icons/Share';
+import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { RAZORPAY_PAYMENT_KEY_ID } from '../constants';
+import { Box, Button, CircularProgress, LinearProgress, Slide, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 
 
@@ -12,6 +18,8 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
 
     const [success, setSucess] = useState(false);
     const [failure, setFailure] = useState(false);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const [showSnackBar, setShowSnackBar] = React.useState(false);
     const { get, post, response, loading, error } = httpClient;
 
 
@@ -21,6 +29,7 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
 
             setSucess(false);
             setFailure(false);
+            setButtonLoader(true);
             const data = await createRazorpayOrder({ post, response }, parseInt(amount), placeId)
 
             console.log(data)
@@ -37,6 +46,8 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                     console.log("payment successful from handler", response);
                     setSucess(true);
                     setFailure(false);
+                    setButtonLoader(false);
+                    setShowSnackBar('success');
                 },
                 "prefill": {
                     "name": name,
@@ -58,6 +69,7 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
                 console.log("payment failure", response);
                 setSucess(false);
                 setFailure(true);
+                setButtonLoader(false);
             });
             rzp1.on('payment.paid', function (response) {
                 console.log("payment sucessful from event", response);
@@ -72,27 +84,66 @@ const RazorpayPayment = ({ name, email, amount, placeId, httpClient }) => {
     return (
         <div className="App">
             <div className="form">
-                <button
-                    className="App-link"
+                <Button
+                    className="primary-button"
+                    // className="App-link"
+                    disabled={buttonLoader}
                     onClick={displayRazorPay}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
+                    <div>
+                        <div>
                     Donate now
-                </button>
+                    </div>
+                    {buttonLoader ?
+                    <Box sx={{ width: '100%' }}>
+                        <LinearProgress style={{ marginLeft: '10px' }} size="small" />
+                    </Box>
+                        : null
+                    }
+                    </div>
+                </Button>
             </div>
             <div>
+                <Snackbar
+                autoHideDuration={6000}
+                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={showSnackBar}
+            TransitionComponent={(props) => <Slide {...props} direction="left" />}
+
+                >
+                    <Alert variant="filled" severity="success">
+                     Payment Successful!!  
+                    </Alert>
+                </Snackbar>
                 {
                     success ? <div className="success">Payment successful!
 
                     </div> : <div></div>
                 }
-                <div style={{ display: 'block', paddingTop: '20px', alignSelf: 'center' }}>
-                    <img height="30px" width="30px"  src="/shareIcon.png" onClick={() => { 
+                <div style={{ display: 'block', paddingTop: '10px', alignSelf: 'center' }}>
+                    <p className="sub-text">Share and Support this campaign</p>
+                    <div className="social-share-icons">
+                        <ShareIcon
+                            onClick={() => {
+                                copyUrlToClipboard(window.location.href)
+                                alert('link is copied!');
+                            }}
+                        />
+                        <a href={`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`} rel="noopener noreferrer" target="_blank">
+                            <FacebookIcon />
+                        </a>
+
+                        <a href={`whatsapp://send?text=Help me to Support this campaign ${window.location.href}`} data-action="share/whatsapp/share">
+                            <WhatsAppIcon />
+                        </a>
+                    </div>
+                    {/* <img height="30px" width="30px"  src="/shareIcon.png" onClick={() => { 
                         copyUrlToClipboard(window.location.href)
                         alert('link is copied!');
                     }
-                    } alt="share" title="Copy Link"></img>
+                    } alt="share" title="Copy Link"></img> */}
                 </div>
             </div>
 

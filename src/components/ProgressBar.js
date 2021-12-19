@@ -18,7 +18,7 @@ const ProgressBar = (props) => {
 
       useEffect(() => {
           
-          let newProgress = props.percentage + "%";
+          let newProgress = props.percentage ? props.percentage + "%" : '';
           setProgress(newProgress);
       })
 
