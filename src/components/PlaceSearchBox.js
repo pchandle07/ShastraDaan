@@ -3,7 +3,9 @@ import { Link } from "react-router-dom"
 import { get, debounce } from 'lodash';
 import { useState, useRef, useEffect } from 'react';
 import "./PlaceSearchBox.css"
-import { CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
+import { CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField  } from '@material-ui/core';
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
 
 const google = window.google
 
@@ -15,13 +17,17 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
 
   const [text, setText] = useState("");
+
+  //Mangesh Work
   const [loading, setLoading] = useState(false);
+
   // const [schools, setSchools] = useState([])
   const [cardVisibility, setCardVisibility] = useState("none") //visible
   const [latitude, setLatitude] = useState(7.798000);
   const [longitude, setLongitude] = useState(68.14712);
 
   // const [city, setCity] = useState("");
+  //fetchSchools is the list of colleges we derive after api call.
 
   const fetchSchools = debounce(() => {
     var pyrmont = new google.maps.LatLng(latitude, longitude);
@@ -50,31 +56,48 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
 
 
         if (results.length > 0) {
+          
+          setLoading(false);
 
           for (var i = 0; i < results.length; i++) {
 
             let place = results[i];
-
             let placeAddress = place.formatted_address.toUpperCase();
 
             if (placeAddress.includes(city.toUpperCase())) {
-              schoolsArr.push(results[i])
+              schoolsArr.push(results[i]);
             }
           }
-          setSchools(schoolsArr)
+          setSchools(schoolsArr);
         }
       }
     });
   }
     , 500);
 
+    function selectedValue(event,value){
+      schools.map((school) =>{
+
+      
+      setFinalPlace(school)
+      setText(school.name);
+      localStorage.setItem('placeInfo', JSON.stringify(school));
+      toggleDialog(true);
+      }
+      );
+        }
 
   function handleInput(e) {
+    
+    console.log("The event value received is : ",e.target.value);
+
+    setLoading(true);
 
     if (e.target.value === "") {
       setSchools([])
       setText(e.target.value);
       //       setCardVisibility("none");
+      setLoading(false); 
     }
     else {
       setText(e.target.value);
@@ -110,69 +133,35 @@ const PlaceSearchBox = ({ schools, setSchools, city, setCity, toggleDialog, setF
   return (
     <div>
       <div id="map"></div>
-
       <div className="input-container">
-
         <div className="city-input form-input-wrap">
           <TextField autofocus fullWidth variant="outlined" type="search" inputRef={autoCompleteRef} label="Find a city" />
         </div>
 
-
         <div className="school-input form-input-wrap" >
           {/* <TextField fullWidth variant="outlined" onChange={handleInput} label="Find your school" type="text" value={text} /> */}
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="outlined-adornment-password">Find your school</InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password"
-              type="text"
-              value={text}
-              // disabled={loading}
-              label="Find your school"
-              onChange={handleInput}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    // onClick={handleClickShowPassword}
-                    // onMouseDown={handleMouseDownPassword}
+         
+         
+          {/* <CircularProgress />  So this is working very fine...*/}
 
-                    edge="end"
-                  >
-                    {loading ?
-                      <CircularProgress />
-                      : null
-                    }
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <div className="schoolCards" style={{ display: cardVisibility }}>
-            {/* {
-              schools.map((school) =>
-                <Link key={school.place_id} to={"/"+school.place_id}><div value="hello" key={new Date().getTime()} className="searchCard" onClick={() => {setCardVisibility("none")}}> {school.name} <div style={{fontSize:"0.8rem", color: "gray" }}>
-                {school.formatted_address}
-                </div></div> </Link>)
-            } */}
-            {
-              schools.map((school) =>
-                <div key={school.place_id} to={"/" + school.place_id}><div value="hello" key={new Date().getTime()} className="searchCard" onClick={() => {
-                  setFinalPlace(school);
-                  setText(school.name);
-                  localStorage.setItem('placeInfo', JSON.stringify(school));
-                  toggleDialog(true);
-                  setCardVisibility("none");
-                }}
-                > {school.name} <div style={{ fontSize: "0.8rem", color: "gray" }}>
-                    {school.formatted_address}
-                  </div></div> </div>)
-            }
-          </div>
+
+  <Autocomplete
+      disablePortal
+      noOptionsText={'No Options'}
+      
+      options={schools}
+      onChange={(event, value) => selectedValue(event,value)}
+      getOptionLabel={(option) => option.name.toString()}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Find your school"
+      onChange={handleInput} variant="outlined"
+      />}
+    />
         </div>
-
       </div>
     </div>
   );
 };
+
 
 export default PlaceSearchBox;
